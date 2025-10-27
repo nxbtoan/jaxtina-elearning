@@ -42,8 +42,9 @@ async function CourseList({ query, level }: { query: string, level: string }) {
 }
 
 // Trang chính Courses
-export default function CoursesPage({ searchParams }: CoursesPageProps) {
-  const query = searchParams.q || '';
+export default async function CoursesPage({ searchParams }: CoursesPageProps) {
+  const params = await searchParams;
+  const query = params.q || '';
   const level = searchParams.level || 'All';
 
   return (
