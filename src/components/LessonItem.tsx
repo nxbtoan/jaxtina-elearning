@@ -1,6 +1,9 @@
+'use client';
+
 import Link from 'next/link';
 import { Lesson } from '@/types';
 import { FaPlayCircle, FaCheckCircle, FaLock } from 'react-icons/fa';
+import { useProgress } from '@/hooks/useProgress';
 
 interface LessonItemProps {
   lesson: Lesson;
@@ -8,14 +11,12 @@ interface LessonItemProps {
 }
 
 export const LessonItem = ({ lesson, courseId }: LessonItemProps) => {
+  const { isLessonCompleted } = useProgress();
+  const isCompleted = isLessonCompleted(String(courseId), String(lesson.id));
+
   const getIcon = () => {
-    if (lesson.status === 'completed') {
+    if (isCompleted) {
       return <FaCheckCircle className="text-green-500" />;
-    }
-    // Giả sử (tạm thời) chỉ bài 1 là mở
-    if (lesson.order > 1) {
-      // return <FaLock className="text-gray-400" />; // Khóa
-      return <FaPlayCircle className="text-gray-400" />; // Mở khóa để test
     }
     return <FaPlayCircle className="text-blue-500" />;
   };
@@ -23,26 +24,25 @@ export const LessonItem = ({ lesson, courseId }: LessonItemProps) => {
   return (
     <Link
       href={`/courses/${courseId}/lessons/${lesson.id}`}
-      className="flex items-center justify-between p-4 bg-gray-50 
-                 rounded-lg hover:bg-gray-100 transition-colors cursor-pointer"
+      className={`flex items-center justify-between p-4 rounded-lg transition-colors ${isCompleted ? 'bg-green-50' : 'bg-gray-50 hover:bg-gray-100'}`}
     >
       <div className="flex items-center gap-4">
         <div className="text-xl">{getIcon()}</div>
         
         <div>
-          [cite_start]{/* 2. Tên bài học & Số thứ tự */}
-          <h3 className="text-md font-medium text-gray-900">
+          {/* 2. Tên bài học & Số thứ tự */}
+          <h3 className={`text-md font-medium ${isCompleted ? 'text-gray-500 line-through' : 'text-gray-900'}`}>
             {lesson.order}. {lesson.title}
           </h3>
           
-          [cite_start]{/* 3. Thời lượng */}
+          {/* 3. Thời lượng */}
           <span className="text-sm text-gray-500">{lesson.duration} phút</span>
         </div>
       </div>
 
-      [cite_start]{/* 4. Trạng thái (text) */}
+      {/* 4. Trạng thái (text) */}
       <span className="text-sm font-medium">
-        {lesson.status === 'completed' ? (
+        {isCompleted ? (
           <span className="text-green-600">Hoàn thành</span>
         ) : (
           <span className="text-gray-500">Chưa học</span>

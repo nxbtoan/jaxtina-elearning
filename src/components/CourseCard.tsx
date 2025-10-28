@@ -1,18 +1,24 @@
+'use client';
+
 import Link from 'next/link';
 import Image from 'next/image';
 import { Course } from '@/types';
 import { ProgressBar } from './ProgressBar';
+import { useProgress } from '@/hooks/useProgress';
 
 interface CourseCardProps {
   course: Course;
 }
 
 export const CourseCard = ({ course }: CourseCardProps) => {
+  const { getCourseProgress } = useProgress();
+  const progress = getCourseProgress(String(course.id), course.totalLessons);
+
   return (
     <Link 
       href={`/courses/${course.id}`}
-      className="block bg-white border border-gray-200 rounded-lg shadow-md
-                 hover:shadow-lg transition-shadow duration-300 overflow-hidden"
+      className="flex flex-col bg-white border border-gray-200 rounded-lg shadow-md
+                 hover:shadow-lg transition-shadow duration-300 overflow-hidden h-full"
     >
       {/* 1. Hình ảnh thumbnail (16:9) */}
       <div className="aspect-video w-full relative overflow-hidden">
@@ -25,7 +31,7 @@ export const CourseCard = ({ course }: CourseCardProps) => {
         />
       </div>
       
-      <div className="p-4 flex flex-col h-[calc(100%-11.25rem)]">
+      <div className="p-4 flex flex-col flex-grow">
         {/* 2. Loại và Level */}
         <div className="flex justify-between items-center text-sm text-gray-500 mb-2">
           <span className="font-semibold text-blue-600">{course.kindOfCourse}</span>
@@ -39,19 +45,20 @@ export const CourseCard = ({ course }: CourseCardProps) => {
           {course.title}
         </h3>
         
-        {/* 4. Description (truncate 2 dòng) */}
+        {/* 4. Description */}
         <p className="text-sm text-gray-700 mb-4 line-clamp-2 h-[2.5rem]">
           {course.description}
         </p>
 
+        {/* 5. Số bài học  */}
         <div className="mt-auto">
-          {/* 5. Số bài học */}
-          <div className="text-sm text-gray-500 mb-2">
-            {course.totalLessons} bài học
+          <div className="flex justify-between text-sm text-gray-500 mb-2">
+            <span>{course.totalLessons} bài học</span>
+            <span>{progress}%</span>
           </div>
           
-          {/* 6. Progress Bar */}
-          <ProgressBar progress={course.progress} />
+          {/* 6. Truyền progress */}
+          <ProgressBar progress={progress} />
         </div>
       </div>
     </Link>

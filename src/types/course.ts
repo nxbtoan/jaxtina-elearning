@@ -1,7 +1,7 @@
 import { Lesson } from './lesson';
 
 export interface Course {
-  id: string | number; // Dùng number cho dummyjson
+  id: string | number;
   title: string;
   description: string;
   thumbnail: string;
