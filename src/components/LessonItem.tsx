@@ -16,36 +16,53 @@ export const LessonItem = ({ lesson, courseId }: LessonItemProps) => {
 
   const getIcon = () => {
     if (isCompleted) {
-      return <FaCheckCircle className="text-green-500" />;
+      return <FaCheckCircle className="text-green-600" />;
     }
-    return <FaPlayCircle className="text-blue-500" />;
+    return <FaPlayCircle className="text-[var(--accent-color)]" />;
   };
 
   return (
     <Link
       href={`/courses/${courseId}/lessons/${lesson.id}`}
-      className={`flex items-center justify-between p-4 rounded-lg transition-colors ${isCompleted ? 'bg-green-50' : 'bg-gray-50 hover:bg-gray-100'}`}
+      className={`
+        flex items-center justify-between p-4 rounded-lg
+        transition-all duration-200
+        ${isCompleted 
+          ? 
+            'bg-green-100 hover:bg-green-200 text-gray-800 shadow-sm'
+          : 
+            'bg-transparent border border-[var(--border-color)] hover:bg-[var(--tag-bg)]'
+        }
+      `}
     >
       <div className="flex items-center gap-4">
         <div className="text-xl">{getIcon()}</div>
-        
+
         <div>
-          {/* 2. Tên bài học & Số thứ tự */}
-          <h3 className={`text-md font-medium ${isCompleted ? 'text-gray-500 line-through' : 'text-gray-900'}`}>
+          <h3
+            className={`
+            text-md font-medium
+            ${
+              isCompleted
+                ? 'line-through'
+                : 'text-[var(--text-color)]'
+            }
+          `}
+          >
             {lesson.order}. {lesson.title}
           </h3>
-          
-          {/* 3. Thời lượng */}
-          <span className="text-sm text-gray-500">{lesson.duration} phút</span>
+
+          <span className="text-sm text-[var(--text-muted)]">
+            {lesson.duration} phút
+          </span>
         </div>
       </div>
 
-      {/* 4. Trạng thái (text) */}
       <span className="text-sm font-medium">
         {isCompleted ? (
-          <span className="text-green-600">Hoàn thành</span>
+          <span className="text-green-600 dark:text-green-400">Hoàn thành</span>
         ) : (
-          <span className="text-gray-500">Chưa học</span>
+          <span className="text-[var(--text-muted)]">Chưa học</span>
         )}
       </span>
     </Link>

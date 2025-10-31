@@ -1,45 +1,60 @@
-import { use } from 'react';
-import { Suspense } from 'react';
 import { getCoursesApi } from '@/lib/api';
-import { CourseListClient } from './CourseListClient';
-import { CourseListSkeleton } from '@/components/LoadingSkeleton';
-import { SearchAndFilter } from './SearchAndFilter';
+import { CoursesClientWrapper } from './CoursesClientWrapper';
 
-// Interface cho props của trang
+const ITEMS_PER_PAGE = 9;
+
 interface CoursesPageProps {
-  searchParams: {
+  searchParams: Promise<{
     q?: string;
     level?: string;
-  };
+    kind?: string;
+    page?: string;
+  }>;
 }
 
-// Component Server (fetch data)
-async function CourseListLoader({ query, level }: { query: string, level: string }) {
-  const { courses } = await getCoursesApi(1, 9, query);
-
-  const filteredCourses = courses.filter(course => {
-    if (!level || level === 'All') return true;
-    return course.level === level;
-  });
-
-  return <CourseListClient courses={filteredCourses} />;
-}
-
-// Trang chính Courses
 export default async function CoursesPage({ searchParams }: CoursesPageProps) {
-  const query = searchParams.q || '';
-  const level = searchParams.level || 'All';
+  const params = await searchParams;
+  const query = params.q || '';
+  const level = params.level || 'All';
+  const kind = params.kind || 'All';
+  const page = Number(params.page) || 1;
 
-return (
-    <div className="space-y-8">
-      <h1 className="text-3xl font-bold">Khám phá Khóa học</h1>
-      
-      <SearchAndFilter />
+  // ✅ Luôn fetch toàn bộ 100 item 1 lần
+  const { courses } = await getCoursesApi(1, 100);
 
-      <Suspense key={query + level} fallback={<CourseListSkeleton />}>
-        {/* 5. Gọi component Server (Loader) */}
-        <CourseListLoader query={query} level={level} />
-      </Suspense>
-    </div>
+  const lowerCaseQuery = query.toLowerCase();
+
+  // Lọc kết quả ở server component
+  const filteredCourses = courses
+    .filter(course => {
+      if (!query) return true;
+      return (
+        course.title.toLowerCase().includes(lowerCaseQuery) ||
+        course.description.toLowerCase().includes(lowerCaseQuery) ||
+        course.kindOfCourse.toLowerCase().includes(lowerCaseQuery) ||
+        course.level.toLowerCase().includes(lowerCaseQuery)
+      );
+    })
+    .filter(course => level === 'All' || course.level === level)
+    .filter(course => kind === 'All' || course.kindOfCourse === kind);
+
+  // ✅ Tính toán số trang và cắt dữ liệu 9 item/trang
+  const totalItems = filteredCourses.length;
+  const totalPages = Math.ceil(totalItems / ITEMS_PER_PAGE);
+
+  const paginatedCourses = filteredCourses.slice(
+    (page - 1) * ITEMS_PER_PAGE,
+    page * ITEMS_PER_PAGE
+  );
+
+  return (
+    <CoursesClientWrapper
+      query={query}
+      level={level}
+      kind={kind}
+      courses={paginatedCourses}
+      totalPages={totalPages}
+      currentPage={page}
+    />
   );
 }
