@@ -27,7 +27,7 @@ export const Header = () => {
           <Link
             href={user ? '/courses' : '/'}
             className="
-              text-xl font-bold text-[var(--accent-color)]
+              text-xl md:text-xl font-bold text-[var(--accent-color)]
               transition-transform hover:scale-105
             "
           >
@@ -36,7 +36,7 @@ export const Header = () => {
         </motion.div>
 
         <motion.div
-          className="flex items-center gap-4"
+          className="flex items-center gap-2 md:gap-4"
           initial={{ opacity: 0, x: 20 }}
           animate={{ opacity: 1, x: 0 }}
           transition={{ duration: 0.5 }}
@@ -51,9 +51,8 @@ export const Header = () => {
               <button
                 onClick={logout}
                 className="
-                  bg-transparent text-red-500 px-4 py-2
-                  rounded-lg border border-red-500
-                  hover:bg-red-500 hover:text-white
+                  bg-red-500 text-white px-3 md:px-4 py-2 
+                  rounded-lg hover:bg-red-600 
                   transition-colors text-sm font-medium
                 "
               >
@@ -65,7 +64,7 @@ export const Header = () => {
               <ThemeToggle />
               <Link
                 href="/auth/login"
-                className="bg-[var(--accent-color)] text-white px-4 py-2
+                className="bg-[var(--accent-color)] text-white px-3 md:px-4 py-2
                   rounded-lg hover:opacity-90 transition-all text-sm font-medium
                   shadow-lg shadow-blue-500/30
                   dark:shadow-blue-400/30

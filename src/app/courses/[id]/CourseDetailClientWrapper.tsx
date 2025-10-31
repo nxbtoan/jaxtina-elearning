@@ -5,7 +5,7 @@ import { Course } from '@/types';
 import { useProgress } from '@/hooks/useProgress';
 import { ProgressBar } from '@/components/ProgressBar';
 import { LessonItem } from '@/components/LessonItem';
-import { FaTasks, FaListOl } from 'react-icons/fa'; // Thêm icons
+import { FaTasks, FaListOl } from 'react-icons/fa';
 
 interface CourseDetailClientWrapperProps {
   course: Course;
@@ -19,7 +19,6 @@ export const CourseDetailClientWrapper = ({
 
   return (
     <div className="space-y-6">
-      {/* NÂNG CẤP: Thêm khối Tiến độ học tập (BONUS) */}
       <div className="bg-base border border-base p-6 rounded-lg shadow-md">
         <div className="flex justify-between items-center mb-3">
           <h2 className="text-2xl font-semibold text-base flex items-center gap-2">

@@ -21,14 +21,14 @@ const itemVariants = {
 export function CourseDetailClientWrapperAnimated({ course }: { course: Course }) {
   return (
     <motion.div
-      className="max-w-4xl mx-auto space-y-6 pb-12"
+      className="max-w-none lg:max-w-4xl lg:mx-auto space-y-4 lg:space-y-6"
       variants={pageVariants}
       initial="hidden"
       animate="visible"
     >
       {/* Header */}
       <motion.div
-        className="relative h-64 w-full rounded-lg overflow-hidden shadow-lg"
+        className="relative h-48 md:h-64 w-full lg:rounded-lg overflow-hidden shadow-lg"
         variants={itemVariants}
       >
         <Image
@@ -49,7 +49,7 @@ export function CourseDetailClientWrapperAnimated({ course }: { course: Course }
             </span>
           </div>
 
-          <h1 className="text-3xl md:text-4xl font-bold text-white shadow-text">
+          <h1 className="text-2xl md:text-4xl font-bold text-white shadow-text">
             {course.title}
           </h1>
         </div>
@@ -57,10 +57,10 @@ export function CourseDetailClientWrapperAnimated({ course }: { course: Course }
 
       {/* Mô tả */}
       <motion.div
-        className="bg-base border border-base p-6 rounded-lg shadow-md"
+        className="bg-base p-4 md:p-6 lg:rounded-lg shadow-md"
         variants={itemVariants}
       >
-        <h2 className="text-2xl font-semibold mb-3 text-base">
+        <h2 className="text-xl md:text-2xl font-semibold mb-3 text-base">
           Mô tả khóa học
         </h2>
         <p className="text-[var(--text-muted)] leading-relaxed whitespace-pre-line">
@@ -68,7 +68,6 @@ export function CourseDetailClientWrapperAnimated({ course }: { course: Course }
         </p>
       </motion.div>
 
-      {/* Phần nội dung client */}
       <motion.div variants={itemVariants}>
         <CourseDetailClientWrapper course={course} />
       </motion.div>

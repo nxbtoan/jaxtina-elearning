@@ -31,10 +31,19 @@ export default function LoginPage() {
   `;
 
   return (
-    <div className="relative min-h-[calc(100vh-80px)] flex items-center justify-center overflow-hidden">
-      <div className="relative w-[70%] h-[70vh] flex items-center justify-end rounded-[2rem] border border-[var(--border-color)] shadow-2xl overflow-hidden">
-        {/* Background hero */}
-        <div className="absolute inset-0 -z-10">
+    <div className="relative min-h-[calc(100vh-80px)] flex items-center justify-center p-4 overflow-hidden">
+      <div 
+        className="
+          relative w-full h-[80vh] flex items-center justify-center rounded-2xl
+          lg:w-[70%] lg:h-[70vh] lg:justify-end lg:rounded-[2rem]
+          
+          border-none shadow-none
+          lg:border lg:border-[var(--border-color)] lg:shadow-2xl 
+          
+          overflow-hidden transition-all duration-300
+        "
+      >
+        <div className="hidden lg:block absolute inset-0 -z-10">
           <Image
             src="/hero.jpg"
             alt="Jaxtina Hero"
@@ -49,14 +58,24 @@ export default function LoginPage() {
         <motion.form
           onSubmit={handleSubmit}
           className="
-            relative w-full max-w-sm mr-12 p-8 rounded-2xl overflow-hidden
-            border shadow-2xl transition-all duration-300
-            backdrop-blur-xs
-            bg-[var(--bg-blur)]
-            border-[rgba(255,255,255,0.4)] dark:border-[rgba(255,255,255,0.1)]
+            relative w-full p-6 
+            lg:p-8 rounded-2xl overflow-hidden
+            transition-all duration-300
+            border-none shadow-none backdrop-blur-none bg-transparent
+            
+            lg:border lg:shadow-2xl
+            lg:backdrop-blur-xs
+            lg:bg-[var(--bg-blur)]
+            lg:border-[rgba(255,255,255,0.4)] lg:dark:border-[rgba(255,255,255,0.1)]
+            
             before:absolute before:inset-0 before:rounded-2xl before:-z-10
-            before:bg-gradient-to-br before:from-white/40 before:to-transparent
-            before:dark:from-white/10 before:dark:to-transparent
+            before:hidden
+            lg:before:block
+            lg:before:bg-gradient-to-br lg:before:from-white/40 lg:before:to-transparent
+            lg:before:dark:from-white/10 lg:before:dark:to-transparent
+            
+            max-w-md
+            lg:max-w-sm lg:mr-12
           "
           initial={{ opacity: 0, x: 40 }}
           animate={{ opacity: 1, x: 0 }}
@@ -76,7 +95,7 @@ export default function LoginPage() {
               height={60}
               className="mb-3 drop-shadow-lg"
             />
-            <h1 className="text-xl font-bold text-[#2D368E] text-center">
+            <h1 className="text-xl font-bold text-[var(--text-color)] text-center">
               Đăng nhập <span className="text-[#CC2028]">Jaxtina</span> Learning
             </h1>
           </motion.div>
@@ -145,6 +164,7 @@ export default function LoginPage() {
                   initial={{ opacity: 0, scale: 0.8 }}
                   animate={{ opacity: 1, scale: 1 }}
                   exit={{ opacity: 0, scale: 0.8 }}
+                  className="flex justify-center items-center"
                 >
                   <FaSpinner className="animate-spin text-lg" />
                 </motion.div>
@@ -162,7 +182,7 @@ export default function LoginPage() {
           </motion.button>
 
           {/* Footer slogan */}
-          <p className="text-center text-sm text-gray-700 dark:text-gray-300 mt-6 italic">
+          <p className="text-center text-sm text-[var(--text-muted)] mt-6 italic">
             “Your English journey starts here 🚀”
           </p>
         </motion.form>
